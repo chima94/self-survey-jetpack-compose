@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Self Survey</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="signIn_or_createAccount">sign in or create an account</string>
+    <string name="email">Email</string>
+    <string name="continue_btn">CONTINUE</string>
+    <string name="sign_in_as_guest">SIGN IN AS GUEST</string>
+    <string name="or">or</string>
+    <string name="survey_text">Better survey with NodeX</string>
+    <string name="show_password">show password</string>
+    <string name="hide_password">hide password</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="terms">By continuing, you agree to the terms of service</string>
+    <string name="create_account">CREAT ACCOUNT</string>
+    <string name="back">back</string>
+</resources>
