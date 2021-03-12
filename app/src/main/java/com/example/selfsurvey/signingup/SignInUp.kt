@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusState
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -49,7 +50,9 @@ fun SignInSignUpScreen(
             Spacer(modifier = Modifier.height(16.dp))
             OrSignInAsGuest(
                onSignedInAsGuest = onSignInAsGuest,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
             )
         }
     }
@@ -156,7 +159,7 @@ fun Password(
             if(showPassword.value){
                 IconButton(onClick = {showPassword.value = false}) {
                     Icon(
-                        imageVector = Icons.Filled.Lock,
+                        painter = painterResource(id = R.drawable.ic_visibility),
                         contentDescription = stringResource(R.string.hide_password)
                     )
                     
@@ -164,7 +167,7 @@ fun Password(
             }else{
                 IconButton(onClick = { showPassword.value = true }) {
                     Icon(
-                        imageVector = Icons.Filled.Lock,
+                        painter = painterResource(id = R.drawable.ic_visibility_off),
                         contentDescription = stringResource(R.string.show_password)
                     )
                 }

@@ -60,8 +60,11 @@ fun SignUpContent(
         val emailState = remember{ EmailState() }
 
         Email(emailState, onImeAction = {passwordFocusRequest.requestFocus()})
+
         Spacer(modifier = Modifier.height(16.dp))
+
         val passwordState = remember{ PasswordState() }
+
         Password(
             label = stringResource(R.string.password),
             passwordState = passwordState,
@@ -70,6 +73,7 @@ fun SignUpContent(
             modifier = Modifier.focusRequester(passwordFocusRequest)
         )
         Spacer(modifier = Modifier.height(16.dp))
+
         val confirmPasswordState = remember{ ConfirmPasswordState(passwordState = passwordState)}
         Password(
             label = stringResource(R.string.confirm_password),

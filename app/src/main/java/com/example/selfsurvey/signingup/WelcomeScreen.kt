@@ -143,7 +143,7 @@ private fun SignInCreateAccount(
     modifier: Modifier = Modifier
 ){
     val emailState = remember{ EmailState()}
-    Column(modifier = Modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
         CompositionLocalProvider( LocalContentAlpha provides ContentAlpha.medium) {
             Text(
                 text = stringResource(id = R.string.signIn_or_createAccount),
