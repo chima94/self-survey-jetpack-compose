@@ -5,56 +5,85 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.viewModels
 import com.example.selfsurvey.R
+import com.example.selfsurvey.ui.theme.SelfSurveyTheme
+import com.google.android.material.datepicker.MaterialDatePicker
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SurveyFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SurveyFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private val viewModel: SurveyViewModel by viewModels {
+        SurveyViewModelFactory(PhotoUriManager(requireContext().applicationContext))
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_survey, container, false)
-    }
+        return ComposeView(requireContext()).apply {
+            id = R.id.sign_in_fragment
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SurveyFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SurveyFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+
+            setContent {
+                SelfSurveyTheme {
+                    viewModel.uiState.observeAsState().value?.let { surveyState ->
+                        when (surveyState) {
+                            is SurveyState.Questions -> SurveyQuestionsScreen(
+                                questions = surveyState,
+                                onAction = { id, action -> handleSurveyAction(id, action) },
+                                onDonePressed = { viewModel.computeResult(surveyState) },
+                                onBackPressed = {
+                                    activity?.onBackPressedDispatcher?.onBackPressed()
+                                }
+                            )
+                            is SurveyState.Result -> SurveyResultScreen(
+                                result = surveyState,
+                                onDonePressed = {
+                                    activity?.onBackPressedDispatcher?.onBackPressed()
+                                }
+                            )
+                        }
+                    }
                 }
             }
+        }
     }
+
+
+    private fun handleSurveyAction(questionId : Int, actionType : SurveyActionType){
+        when(actionType){
+            SurveyActionType.PICK_DATE -> showDatePicker(questionId)
+            SurveyActionType.TAKE_PHOTO -> takePhoto()
+            SurveyActionType.SELECT_CONTACT -> selectContact(questionId)
+        }
+    }
+
+
+    private fun showDatePicker(questionId: Int) {
+        val picker = MaterialDatePicker.Builder.datePicker().build()
+        activity?.let {
+            picker.show(it.supportFragmentManager, picker.toString())
+            picker.addOnPositiveButtonClickListener {
+                viewModel.onDatePicked(questionId, picker.headerText)
+            }
+        }
+    }
+
+    private fun takePhoto() {
+
+    }
+
+
+    private fun selectContact(questionId: Int) {
+
+    }
+
 }
